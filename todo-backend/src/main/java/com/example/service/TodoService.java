@@ -35,6 +35,7 @@ public class TodoService {
             todo.setTitle(todoDetails.getTitle());
             todo.setDescription(todoDetails.getDescription());
             todo.setCompleted(todoDetails.getCompleted());
+            todo.setPriority(todoDetails.getPriority());
             return todoRepository.save(todo);
         }).orElseThrow(() -> new RuntimeException("Todo not found with id " + id));
     }

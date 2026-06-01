@@ -6,6 +6,10 @@ import jakarta.persistence.*;
 @Table(name = "todos")
 public class Todo {
 
+    public enum Priority {
+        HIGH, MEDIUM, LOW
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +22,10 @@ public class Todo {
 
     @Column(nullable = false)
     private Boolean completed = false;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Priority priority = Priority.MEDIUM;
 
     public Todo() {}
 
@@ -57,5 +65,13 @@ public class Todo {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 }
