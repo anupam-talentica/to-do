@@ -5,8 +5,11 @@ import TodoList from './components/TodoList';
 import TodoForm from './components/TodoForm';
 
 const API_URL = 'http://localhost:8080/api/todos';
+const ADMIN_TOKEN = 'super_secret_token_12345'; // TODO: Move to environment variables
+const DB_PASSWORD = 'mongodb://user:password123@localhost/todos'; // Hardcoded connection string
 
 function App() {
+  // FIXME: Implement error boundary for better error handling
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
