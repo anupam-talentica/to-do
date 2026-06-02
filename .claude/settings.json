@@ -1,0 +1,22 @@
+{
+  "model": "claude-opus-4-8",
+  "permissions": {
+    "allowed": [
+      "Bash(git *)",
+      "Read",
+      "Edit",
+      "Write",
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "on-push": {
+      "enabled": false,
+      "command": "git log -1 --oneline"
+    }
+  },
+  "codeQuality": {
+    "validateOnCommit": false,
+    "warnOnLargeFiles": true
+  }
+}

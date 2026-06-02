@@ -79,9 +79,18 @@ The frontend will open automatically at `http://localhost:3000`
 ✅ **Create Todos** - Add new todos with title and description
 ✅ **Mark Complete** - Check off todos as you complete them
 ✅ **Delete Todos** - Remove todos from your list
+✅ **Priority Levels** - Organize todos by HIGH, MEDIUM, LOW priority
 ✅ **Progress Tracking** - See your completion progress
 ✅ **Responsive Design** - Works on desktop and mobile devices
 ✅ **Real-time Sync** - Instant updates between browser and server
+
+## Development with Claude Code
+
+This project includes custom Claude Code skills for streamlined development:
+- **`/git-commit-helper`** — Auto-generate formatted commit messages
+- **`/pr-review-assistant`** — Automated code review before pushing
+
+See [SKILLS.md](SKILLS.md) for detailed usage and more skills.
 
 ## Technology Stack
 
