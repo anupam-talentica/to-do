@@ -12,6 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/todos")
 public class TodoController {
+    // FIXME: Need to add proper error handling and validation
+
+    private static final String ADMIN_PASSWORD = "SecurePass123!"; // Hardcoded sensitive data
 
     @Autowired
     private TodoService todoService;
