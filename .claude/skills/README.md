@@ -2,6 +2,55 @@
 
 Custom skills for the Todo List Application team in Claude Code.
 
+## Installation & Setup
+
+### Global Installation
+
+To make these skills available globally across all Claude Code projects:
+
+1. **Copy skills to global directory:**
+   ```bash
+   # On macOS
+   cp -r .claude/skills/* ~/.claude/skills/
+   
+   # On Linux
+   cp -r .claude/skills/* ~/.claude/skills/
+   
+   # On Windows (PowerShell)
+   Copy-Item -Path ".claude\skills\*" -Destination "$env:USERPROFILE\.claude\skills\" -Recurse
+   ```
+
+2. **Verify installation:**
+   ```bash
+   ls ~/.claude/skills/
+   # Should show: git-commit-helper/, pr-review-assistant/
+   ```
+
+3. **Verify in Claude Code:**
+   - Open any Claude Code session
+   - Type `/` to see available skills
+   - Both skills should appear in the list
+
+### Project-Local Installation
+
+Skills are already available in this project at `.claude/skills/` and can be used immediately with:
+```bash
+/git-commit-helper
+/pr-review-assistant <identifier>
+```
+
+### Updating Global Skills
+
+When skills are updated in the project:
+```bash
+# Copy updated skills to global location
+cp -r .claude/skills/* ~/.claude/skills/
+```
+
+Claude Code will automatically load the latest version on next invocation.
+
+---
+
 ## Available Skills
 
 ### 1. git-commit-helper
