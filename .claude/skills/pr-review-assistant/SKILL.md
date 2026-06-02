@@ -1,58 +1,110 @@
 ---
 name: pr-review-assistant
-description: Comprehensive code review analyzing changes for correctness, quality, and best practices
-when_to_use: Before opening a pull request, run this to catch issues early
-allowed-tools: Bash(git diff, git log) Read WebSearch
+description: Comprehensive PR code review with quality metrics and detailed findings
+type: agent
 ---
 
-# pr-review-assistant
+# PR Review Assistant Implementation
 
-**Purpose:** Comprehensive PR review assistant that analyzes code changes for correctness, style, and best practices.
+Analyze pull requests and generate quality score reports with findings organized by component and severity.
 
-**Usage:** `/pr-review-assistant`
+## Skill Invocation
 
-## What it does
-
-Performs a detailed review of pending changes on the current branch by checking for:
-- **Correctness bugs** — Logic errors, edge cases, null/undefined handling
-- **Code quality** — Style consistency, naming, complexity
-- **Simplification opportunities** — Reusable patterns, DRY violations
-- **Performance** — Inefficient operations, unnecessary renders (React)
-- **Security** — Input validation, injection vulnerabilities, credential exposure
-- **Testing** — Test coverage, mocked dependencies that should be real
-
-## When to use
-
-Run before creating a pull request to catch issues early:
-
-```bash
-git checkout feature/my-feature
-/pr-review-assistant
+```
+/pr-review-assistant <pr-identifier>
 ```
 
-## What to do with findings
+Supports: PR numbers, GitHub URLs, branch ranges (main..feature), or HEAD
 
-The skill returns a list of findings with:
-1. **File and line location** — Exactly where to look
-2. **Issue description** — What the problem is
-3. **Suggested fix** — How to resolve it
+## Review Workflow
 
-Review each finding and decide whether to:
-- ✅ Apply the suggested fix
-- 📝 Adjust it based on context
-- ⊘ Dismiss it if it doesn't apply to your use case
+1. Fetch PR data via git diff or gh pr diff
+2. Run pattern detection to identify risky patterns
+3. Categorize findings by component (Backend, Frontend, DevOps, Database, Config/Other)
+4. Assign severity levels (CRITICAL, HIGH, MEDIUM, LOW)
+5. Generate quality score summary with detailed findings
 
-## Tips
+## Pattern Detection
 
-- Run this on your feature branch before opening a PR
-- Use the findings to improve code quality proactively
-- Revisit after significant changes to catch new issues
-- Share interesting findings with your team for knowledge sharing
+Scans for:
+- **eval() / exec()** → CRITICAL: arbitrary code execution
+- **Hardcoded credentials** → CRITICAL: API keys, passwords in code
+- **SQL injection risks** → CRITICAL: string concatenation in queries
+- **Blocking sleep** → HIGH: freezes event loops
+- **Missing error handling** → HIGH: async without try-catch
+- **TODO/FIXME comments** → MEDIUM: unfinished work
+- **Debug logging** → LOW: console.log, print statements
 
-## Integration with PR workflow
+## Review Checklist
 
-1. Make changes on your feature branch
-2. Commit and push to origin
-3. Run `/pr-review-assistant` before opening the PR
-4. Address findings or add context in PR description
-5. Open PR with higher confidence in code quality
+### Security
+- No hardcoded credentials or secrets
+- Passwords masked in logs
+- SQL uses parameterized queries
+- User input validated and sanitized
+- Output encoded for XSS prevention
+- CORS properly configured
+
+### Performance  
+- No N+1 database queries
+- Results paginated for large datasets
+- No blocking operations on event loops
+- Long-running ops are async/background
+- Caching for frequently accessed data
+
+### Maintainability
+- Functions have single responsibility
+- Complex logic documented
+- Descriptive variable names
+- Duplicate code eliminated
+- Error handling comprehensive
+- Test coverage adequate
+
+## Output Format
+
+Generates a quality score table with detailed findings:
+
+```
+Code Review Quality Score:
+
+| Category | Findings | Severity Breakdown |
+|----------|----------|-------------------|
+| Backend | 5 findings | 2 CRITICAL, 1 HIGH, 2 MEDIUM |
+| Frontend | 3 findings | 1 CRITICAL, 2 LOW |
+| Total | 8 findings | 3 CRITICAL, 1 HIGH, 2 MEDIUM, 2 LOW |
+
+## Detailed Findings
+
+### Backend - CRITICAL (2)
+
+- **HARDCODED_PASSWORD**: Hardcoded credentials found in code
+  - File: `api/config.py:42`
+  - Code: `api_key = "sk-1234567890abcdef"`
+  - Fix: Use environment variables, secrets management systems, or credential providers
+
+...
+```
+
+## Usage Examples
+
+```bash
+# Review a GitHub PR by number
+/pr-review-assistant 123
+
+# Review a GitHub PR by URL
+/pr-review-assistant https://github.com/org/repo/pull/123
+
+# Review a branch
+/pr-review-assistant main..feature-new-auth
+
+# Review uncommitted changes
+/pr-review-assistant HEAD
+```
+
+## Key Principles
+
+1. **Quality Metrics First** - Lead with aggregate quality scores
+2. **Component Breakdown** - Organize findings by code domain
+3. **Severity Clear** - Make severity obvious at a glance
+4. **Production Impact** - Focus on issues that affect users/systems
+5. **Actionable** - Provide specific guidance to fix each issue

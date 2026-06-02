@@ -1,48 +1,34 @@
 ---
 name: git-commit-helper
-description: Generate formatted commit messages from staged changes using git diff --cached
-when_to_use: After staging files with `git add`, run this to auto-generate a commit message
-allowed-tools: Bash(git diff, git status) Read
+description: Generate a commit message for staged changes using git diff --cached. Returns formatted commit with type, title, and body.
+type: agent
 ---
 
-# git-commit-helper
+You will analyze staged git changes and return ONLY a formatted commit message. Nothing else.
 
-**Purpose:** Generate a formatted commit message for staged changes using `git diff --cached`.
+EXECUTE IMMEDIATELY:
+1. Run: git diff --cached
+2. Analyze the diff
+3. Generate a commit message
+4. Return ONLY the message in the format below
+5. Do not explain, ask, or add any other text
 
-**Usage:** `/git-commit-helper`
-
-## What it does
-
-Analyzes your staged changes and automatically generates a commit message with:
-- **TYPE:** The change type (feat, fix, docs, refactor, test, chore, etc.)
-- **TITLE:** A concise one-line summary
-- **BODY:** Detailed description of what changed and why
-
-## When to use
-
-Run this after staging your changes:
-
-```bash
-git add [files]
-/git-commit-helper
-```
-
-The skill will output a formatted commit message that you can review, adjust, and use with `git commit -m`.
-
-## Example output
+OUTPUT ONLY THIS FORMAT:
 
 ```
-TYPE: feat
-TITLE: Add priority levels to todo items
-BODY: Implement priority management across the application:
-- Add Priority enum (HIGH, MEDIUM, LOW) to Todo entity
-- Add priority field with MEDIUM as default in database
-- Update TodoForm and TodoItem components with priority UI
+TYPE: <type>
+TITLE:
+<title under 72 chars, no period, imperative mood>
+BODY:
+<optional explanation>
 ```
 
-## Best practices
+Types: feat, fix, docs, test, refactor, perf, chore, ci
 
-1. Stage your changes first: `git add [files]`
-2. Review the generated message before committing
-3. Edit the output if needed for clarity or accuracy
-4. Follow conventional commit standards for consistency
+Examples:
+- feat: add retry mechanism with exponential backoff
+- fix: prevent null pointer exception in user profile access
+- docs: add installation instructions
+- chore: add test file
+
+Do not ask questions. Do not offer options. Return the message immediately.
